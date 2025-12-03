@@ -350,16 +350,21 @@
          * @param {string} method - 'GET' or 'POST'.
          * @returns {Promise<object>} The JSON 'data' property of the response from the Apps Script.
          */
-        async function callAppsScript(action, data = {}, method = 'GET') {
-            const url = new URL(APPS_SCRIPT_URL);
-            url.searchParams.append('action', action);
+        async function callAppsScript(action, payload) {
+    const data = {
+        action: action,
+        ...payload
+    };
+
+    try {
+        const response = await fetch(APPS_SCRIPT_URL, {
+            method: 'POST', // Use POST even for fetches (like fetchAllRGP) to avoid redirect issues
+            redirect: 'follow',
             
-            const options = {
-                method: method,
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-            };
+            // 💡 CRITICAL FIX: Change Content-Type to text/plain
+            headers: {
+                'Content-Type': 'text/plain;charset=utf-8', 
+            },
             
             if (method === 'POST') {
                 options.body = JSON.stringify(data);
@@ -1764,4 +1769,5 @@
 
     </script>
 </body>
+
 </html>
