@@ -336,7 +336,7 @@
                             </div>
                             <div class="mb-3">
                                 <label class="form-label text-muted">No. of Items</label>
-                                <input type="number" id="itemCount" class="form-control w-25" min="1" value="1" onchange="generateItemRows()">
+                                <input type="number" id="itemCount" class="form-control w-25" min="1" value="1">
                             </div>
                             <table class="table table-bordered align-middle">
                                 <thead class="table-light"><tr><th>Material Description</th><th>Quantity</th></tr></thead>
@@ -876,6 +876,18 @@
                 </tr>`;
             }
         }
+        
+        // ** FIX IMPLEMENTATION: Attach event listener to itemCount input **
+        document.addEventListener('DOMContentLoaded', () => {
+            const itemCountInput = document.getElementById('itemCount');
+            if (itemCountInput) {
+                // Add the event listener to handle input changes
+                itemCountInput.addEventListener('change', generateItemRows);
+                // Also listen for keyup to handle faster changes
+                itemCountInput.addEventListener('keyup', generateItemRows);
+            }
+        });
+        // ** END FIX IMPLEMENTATION **
         
         // MODIFICATION: Updated RGP creation to use Firestore's addDoc
         document.getElementById('createRgpForm').addEventListener('submit', async (e) => {
